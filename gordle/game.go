@@ -1,13 +1,21 @@
 package gordle
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"io"
+)
 
 // Game holds all the information we need to play a game of gordle.
-type Game struct{}
+type Game struct {
+	reader *bufio.Reader
+}
 
 // New returns a Game, which can be used to Play.
-func New() *Game {
-	g := &Game{}
+func New(playerInput io.Reader) *Game {
+	g := &Game{
+		reader: bufio.NewReader(playerInput),
+	}
 
 	return g
 }
