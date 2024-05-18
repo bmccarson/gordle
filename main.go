@@ -1,8 +1,12 @@
 package main
 
-import "github.com/bmccarson/gordle/gordle"
+import (
+	"os"
+
+	"github.com/bmccarson/gordle/gordle"
+)
 
 func main() {
-	g := gordle.New()
+	g := gordle.New(os.Stdin)
 	g.Play()
 }
