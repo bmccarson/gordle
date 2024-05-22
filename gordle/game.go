@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 const solutionLength = 5
@@ -43,7 +44,7 @@ func (g *Game) ask() []rune {
 			continue
 		}
 
-		guess := []rune(string(playerInput))
+		guess := splitToUpperCharacters(string(playerInput))
 
 		err = g.validateGuess(guess)
 		if err != nil {
@@ -64,4 +65,9 @@ func (g *Game) validateGuess(guess []rune) error {
 	}
 
 	return nil
+}
+
+// splitToUpperCharacters is a naive implementation to turn a string into a list of characters
+func splitToUpperCharacters(input string) []rune {
+	return []rune(strings.ToUpper(input))
 }
