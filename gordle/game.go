@@ -68,7 +68,7 @@ func (g *Game) ask() []rune {
 }
 
 // errInvalidWordLength is returned when the guess has the wrong number of characters.
-var errInvalidWordLength = fmt.Errorf("invalid guess, word doesn't have teh same number of characters as the solution")
+var errInvalidWordLength = fmt.Errorf("invalid guess, word doesn't have the same number of characters as the solution")
 
 // validateGuess ensures the guess is valid enough.
 func (g *Game) validateGuess(guess []rune) error {
