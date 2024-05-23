@@ -5,20 +5,23 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"strings"
 )
 
-const solutionLength = 5
-
 // Game holds all the information we need to play a game of gordle.
 type Game struct {
-	reader *bufio.Reader
+	reader      *bufio.Reader
+	solution    []rune
+	maxAttempts int
 }
 
 // New returns a Game, which can be used to Play.
-func New(playerInput io.Reader) *Game {
+func New(playerInput io.Reader, solution string, maxAttempts int) *Game {
 	g := &Game{
-		reader: bufio.NewReader(playerInput),
+		reader:      bufio.NewReader(playerInput),
+		solution:    splitToUpperCharacters(solution),
+		maxAttempts: maxAttempts,
 	}
 
 	return g
@@ -28,14 +31,23 @@ func New(playerInput io.Reader) *Game {
 func (g *Game) Play() {
 	fmt.Println("Welcome to Gordle!")
 
-	guess := g.ask()
+	for currentAttempt := 1; currentAttempt <= g.maxAttempts; currentAttempt++ {
+		guess := g.ask()
 
-	fmt.Printf("Your guess is: %s\n", string(guess))
+		if slices.Equal(guess, g.solution) {
+			fmt.Printf("You won! You found it in %d guess(es)! the word was: %s.\n", currentAttempt, string(g.solution))
+			return
+		}
+	}
+
+	fmt.Printf("You've lsot! The solution was: %s. \n", string(g.solution))
+
+	fmt.Printf("Your guess is: %s\n", string(g.solution))
 }
 
 // ask reads input unitl a valid suggestion is made and returned.
 func (g *Game) ask() []rune {
-	fmt.Printf("Enter a %d-character guess:\n", solutionLength)
+	fmt.Printf("Enter a %d-character guess:\n", len(g.solution))
 
 	for {
 		playerInput, _, err := g.reader.ReadLine()
@@ -60,8 +72,8 @@ var errInvalidWordLength = fmt.Errorf("invalid guess, word doesn't have teh same
 
 // validateGuess ensures the guess is valid enough.
 func (g *Game) validateGuess(guess []rune) error {
-	if len(guess) != solutionLength {
-		return fmt.Errorf("expected %d, got %d, %w", solutionLength, len(guess), errInvalidWordLength)
+	if len(guess) != len(g.solution) {
+		return fmt.Errorf("expected %d, got %d, %w", len(g.solution), len(guess), errInvalidWordLength)
 	}
 
 	return nil
