@@ -40,9 +40,9 @@ func (g *Game) Play() {
 		}
 	}
 
-	fmt.Printf("You've lsot! The solution was: %s. \n", string(g.solution))
+	fmt.Printf("You've lost! The solution was: %s. \n", string(g.solution))
 
-	fmt.Printf("Your guess is: %s\n", string(g.solution))
+	fmt.Printf("Your guess is: %s.\n", string(g.solution))
 }
 
 // ask reads input unitl a valid suggestion is made and returned.
