@@ -22,3 +22,16 @@ func (h hint) String() string {
 		return "💔" // red broken heart
 	}
 }
+
+// feedback is a list of hints, on per character of the word
+type feedback []hint
+
+// StringConcat is a naive implementation to build feedback as a string.
+// It is used only to benchmark it against the string.Builder version.
+func (fb feedback) StringConcat() string {
+	var output string
+	for _, h := range fb {
+		output += h.String()
+	}
+	return output
+}
